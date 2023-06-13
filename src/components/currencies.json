@@ -1,0 +1,27 @@
+[
+    {
+      "id": 1,
+      "value": "PLN",
+      "label": "Polish Zloty",
+      "code": "pl"
+    },
+    {
+      "id": 2,
+      "value": "EUR",
+      "label": "Euro",
+      "code": "eu"
+    },
+    {
+      "id": 3,
+      "value": "GBP",
+      "label": "British Pound",
+      "code": "gb"
+    },
+    {
+      "id": 4,
+      "value": "UAH",
+      "label": "Ukrainian Hryvnia",
+      "code": "ua"
+    }
+  ]
+  
