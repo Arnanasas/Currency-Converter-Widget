@@ -1,5 +1,6 @@
 @import-normalize
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import './variables';
 
 
 html {
@@ -15,4 +16,9 @@ body {
 .container {
     max-width: 550px;
     margin: 0 auto;
+    margin-top: 1rem;
+    border-radius: 3px;
+    box-shadow: 1px 0px 87px -9px $primary-color;
+    -webkit-box-shadow: 1px 0px 87px -9px $primary-color;
+    -moz-box-shadow: 1px 0px 87px -9px $primary-color;
 }

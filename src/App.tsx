@@ -1,10 +1,12 @@
 import React from 'react';
+import CurrencyConverterWidget from './components/CurrencyConverterWidget';
 
 
 function App() {
   return (
     <div className="container">
-      <h1>Hello world</h1>
+      <CurrencyConverterWidget></CurrencyConverterWidget>
+      <h1>Hello world!</h1>
     </div>
   );
 }

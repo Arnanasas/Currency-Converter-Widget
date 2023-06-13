@@ -1,0 +1,54 @@
+@import '../../styles/variables';
+
+
+//   
+// Form fields
+// 
+
+.selectWrapper {
+    display:flex;
+    align-items:center;
+}
+
+.selectContainer {
+    display: flex;
+    align-items: center;
+    padding: $font-size-large;
+  }
+
+.formWrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+  }
+  
+  .countryImage {
+    max-width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    transform: translateY(-1px);
+  }
+  
+  .formLabel {
+    color: $secondary-color;
+    font-size: $font-size-small;
+    text-transform: uppercase;
+  }
+
+  .selectColumn {
+    width: 100%;
+  }
+
+  .swapIcon {
+    color: $icon-color;
+    font-size: $icon-size-large!important;
+    stroke-width: 12px;
+    padding: 0 $font-size-small;
+    transition: 0.4s;
+    &:hover {
+        color: darken($icon-color, 20%);
+        transform: rotate(180deg);
+        // transform: scale(110%);
+    }
+  }
+
