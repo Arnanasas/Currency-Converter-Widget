@@ -1,0 +1,66 @@
+@import '../../../styles/variables';
+
+.inputIcon {
+    position: relative;
+    font-weight: $font-weight-light;
+  
+    > i {
+      position: absolute;
+      display: block;
+      transform: translate(0, -50%);
+      top: 50%;
+      pointer-events: none;
+      width: 25px;
+      text-align: center;
+      font-style: normal;
+    }
+  
+    > input {
+      padding-left: 5px;
+      padding-right: 0;
+      text-align: left; /* Adjusted to keep the text aligned left */
+    }
+  
+    &.inputIconRight {
+      > i {
+        right: 20px;
+      }
+  
+      > input {
+        // padding-left: 25px; /* Adjusted to maintain consistent padding */
+        // padding-right: 25px;
+        text-align: left; /* Adjusted to keep the text aligned left */
+      }
+    }
+  }
+
+  .textInput {
+    width: 100%;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0 !important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-sizing: border-box;
+  }

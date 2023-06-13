@@ -1,0 +1,10 @@
+@import '../../../styles/variables';
+
+.submit {
+    width: 100%;
+    height: 76px;
+    border: none;
+    color: white;
+    font-size: $font-size-large;
+    background-color: $submit-button;
+}

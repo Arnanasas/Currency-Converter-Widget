@@ -11,8 +11,8 @@
 }
 
 .selectContainer {
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     padding: $font-size-large;
   }
 
@@ -27,12 +27,6 @@
     height: 24px;
     margin-right: 8px;
     transform: translateY(-1px);
-  }
-  
-  .formLabel {
-    color: $secondary-color;
-    font-size: $font-size-small;
-    text-transform: uppercase;
   }
 
   .selectColumn {
@@ -52,3 +46,7 @@
     }
   }
 
+  .formRow {
+    display: flex;
+    padding-bottom: $font-size-large;
+  }

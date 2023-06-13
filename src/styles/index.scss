@@ -24,3 +24,18 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+// Hide input type= number increase buttons
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  font-weight: $font-weight-bold;
+}
