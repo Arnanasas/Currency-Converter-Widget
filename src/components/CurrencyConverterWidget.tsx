@@ -8,12 +8,23 @@ import InputLabel from './Form/inputLabel';
 import SubmitButton from './Form/SubmitButton';
 import NumberInput from './Form/NumberInput';
 
-
+interface CurrencyChange {
+  from: string;
+  to: string;
+  amount: number;
+  toAmount: number;
+}
 
 
 function CurrencyConverterWidget() {
+  const initialValues: CurrencyChange = {
+    from: 'EUR',
+    to: 'GBP',
+    amount: 100,
+    toAmount: 0,
+  };
     
-    const [formValues, setFormValues] = useForm();
+    const [formValues, setFormValues] = useForm(initialValues);
     const [error, setError] = useState<string | null>(null);
 
     const handleSubmit = (e: MouseEvent) => {

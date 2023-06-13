@@ -1,19 +1,7 @@
 import React, {useState} from 'react';
-
-interface CurrencyChange {
-    from: string;
-    to: string;
-    amount: number;
-    toAmount: number;
-  }
   
-  const useForm = (): [CurrencyChange, React.Dispatch<React.SetStateAction<CurrencyChange>>] => {
-    const [formValues, setFormValues] = useState<CurrencyChange>({
-      from: 'EUR',
-      to: 'GBP',
-      amount: 100,
-      toAmount: 0,
-    });
+  const useForm = <T extends object>(initialValues: T): [T, React.Dispatch<React.SetStateAction<T>>] => {
+    const [formValues, setFormValues] = useState<T>(initialValues);
   
     return [formValues, setFormValues];
   };
