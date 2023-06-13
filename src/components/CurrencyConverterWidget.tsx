@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {MouseEvent, useState} from 'react';
 import currenciesData from './currencies.json';
 import styles from './styles/CurrencyConverterWidget.module.scss';
 import Select from 'react-select';
@@ -14,6 +14,17 @@ import NumberInput from './Form/NumberInput';
 function CurrencyConverterWidget() {
     
     const [formValues, setFormValues] = useForm();
+    const [error, setError] = useState<string | null>(null);
+
+    const handleSubmit = (e: MouseEvent) => {
+        e.preventDefault();
+        console.log(formValues);
+    };
+
+    const handleChange = (fieldName: string, value: any) => {
+        const newValues = { ...formValues, [fieldName]: value };
+        setFormValues(newValues);
+      };
 
   return (
     <form action="#" className={styles.selectContainer}>
@@ -31,7 +42,7 @@ function CurrencyConverterWidget() {
               <span>{currency.value}</span>
             </div>
           )}
-          onChange={e => {setFormValues({...formValues, from: e ? e.value : ""});}}
+          onChange={e => {handleChange('from', e ? e.value : null);}}
         />
       </div>
 
@@ -68,7 +79,7 @@ function CurrencyConverterWidget() {
       </div> */}
       </div>
       <div className={styles.formRow}>
-            <SubmitButton label="Submit"></SubmitButton>
+            <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>
       </div>
     </form>
   );
