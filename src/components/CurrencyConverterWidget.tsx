@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState } from "react";
+import React, { MouseEvent, useState, useEffect } from "react";
 import currenciesData from "./currencies.json";
 import styles from "./styles/CurrencyConverterWidget.module.scss";
 import Select from "react-select";
@@ -36,16 +36,14 @@ function CurrencyConverterWidget() {
     const [loading, setLoading] = useState(false);
     const [isSubmitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: MouseEvent) => {
-    e.preventDefault();
-    validateForm(formValues);
-    if (isFormValid) {
+    
+    const ApiCall = async () => {
       try {
         setLoading(true);
         setSubmitted(true);
         const { from, to, fromAmount } = formValues;
         const currencyData = await fetchCurrencyData(from, to, fromAmount);
-        console.log(currencyData);
+        // console.log(currencyData);
         setFormValues(currencyData);
       } catch (error) {
         setLoading(false);
@@ -54,6 +52,13 @@ function CurrencyConverterWidget() {
       } finally {
         setLoading(false);
       }
+    };
+
+  const handleSubmit = async (e: MouseEvent) => {
+    e.preventDefault();
+    validateForm(formValues);
+    if (isFormValid) {
+      ApiCall();
     }
   };
 
@@ -61,10 +66,12 @@ function CurrencyConverterWidget() {
     const newValues = { ...formValues, [fieldName]: value };
     setFormValues(newValues);
     validateForm(newValues);
+    ApiCall();
   };
 
+
   return (
-    <form action="#" className={styles.selectContainer}>
+    <form form-action="#" className={styles.selectContainer}>
       <div className={styles.formRow}>
         <div className={styles.selectColumn}>
           <InputLabel label="From:" />
@@ -134,16 +141,17 @@ function CurrencyConverterWidget() {
             currency={formValues.from}
             onChange={(e) => {
               handleChange("fromAmount", e ? e : "");
+              console.log(formValues);
             }}
           />
         </div>
-      {isSubmitted && !loading &&  <div className={styles.selectColumn}>
+      {isSubmitted && !loading &&  <div className={`${styles.selectColumn} ${styles.toAmountField}`}>
       <InputLabel label="To Amount:"></InputLabel>
           <NumberInput
-            value={formValues.fromAmount}
+            value={formValues.toAmount ? formValues.toAmount : 0}
             currency={formValues.to}
             onChange={(e) => {
-              handleChange("fromAmount", e ? e : "");
+              handleChange("toAmount", e ? e : "");
             }}
           />
       </div>
@@ -154,14 +162,12 @@ function CurrencyConverterWidget() {
         {isSubmitted && !loading && 
         <div className={styles.responseWrapper}>
         <IoIosAddCircle /> <span>1 {formValues.from} = {formValues.rate} {formValues.to}</span>
-           <p>
-            Lorem ipsum
-          </p>
+          <p className={styles.subText}>All figures are live mid-market rates, which are for informational purposes only. To see the rates for money transfer, please select sending money option.</p>
         </div>
         }
       </div>
       {loading && <div className={styles.loaderWrapper}><ClipLoader /></div>}
-      {!isFormValid ? <ErrorMessage>{errorMessage}</ErrorMessage> : ""}
+      {!isFormValid && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </form>
   );
 }

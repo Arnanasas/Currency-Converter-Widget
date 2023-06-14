@@ -59,8 +59,21 @@
   display:flex;
   align-items: center;
   font-size: $font-size-medium;
+  flex-wrap: wrap;
   font-weight: $font-weight-bold;
+  padding-top: 1rem;
   svg {
     color: $theme-color;
   }
+}
+
+.toAmountField {
+  padding-left: 47px;
+}
+
+.subText {
+  color: $secondary-color;
+  font-weight: $font-weight-light;
+  font-size: $font-size-small;
+  
 }
