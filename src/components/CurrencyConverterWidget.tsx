@@ -1,10 +1,10 @@
-import React, { MouseEvent, useState, useEffect } from "react";
+import React, { MouseEvent, useState, useEffect, FormEvent } from "react";
 import currenciesData from "./currencies.json";
 import styles from "./styles/CurrencyConverterWidget.module.scss";
 import Select from "react-select";
-import { IoIosSwap, IoIosAddCircle } from "react-icons/io";
+import { IoIosSwap, IoIosRadioButtonOff } from "react-icons/io";
 import useForm from "../hooks/useForm";
-import InputLabel from "./Form/inputLabel";
+import InputLabel from "./Form/InputLabel";
 import SubmitButton from "./Form/SubmitButton";
 import NumberInput from "./Form/NumberInput";
 import CurrencyValidationSchema from "./Form/CurrencyValidationSchema";
@@ -54,7 +54,7 @@ function CurrencyConverterWidget() {
       }
     };
 
-  const handleSubmit = async (e: MouseEvent) => {
+  const handleSubmit = async (e: MouseEvent | FormEvent) => {
     e.preventDefault();
     validateForm(formValues);
     if (isFormValid) {
@@ -71,7 +71,7 @@ function CurrencyConverterWidget() {
 
 
   return (
-    <form form-action="#" className={styles.selectContainer}>
+    <form onSubmit={handleSubmit} className={styles.selectContainer}>
       <div className={styles.formRow}>
         <div className={styles.selectColumn}>
           <InputLabel label="From:" />
@@ -87,7 +87,7 @@ function CurrencyConverterWidget() {
                 <img
                   src={`https://www.transfergo.com/static/images/flags/svg/${currency.code.toUpperCase()}.svg`}
                   className={styles.countryImage}
-                  alt="-image"
+                  alt={`${currency.label} flag icon`}
                 />
                 <span>{currency.value}</span>
               </div>
@@ -122,7 +122,7 @@ function CurrencyConverterWidget() {
                 <img
                   src={`https://www.transfergo.com/static/images/flags/svg/${currency.code.toUpperCase()}.svg`}
                   className={styles.countryImage}
-                  alt="-image"
+                  alt={`${currency.label} flag icon`}
                 />
                 <span>{currency.value}</span>
               </div>
@@ -135,7 +135,7 @@ function CurrencyConverterWidget() {
       </div>
       <div className={styles.formRow}>
         <div className={styles.selectColumn}>
-          <InputLabel label="Amount:"></InputLabel>
+          <InputLabel label="Amount:" />
           <NumberInput
             value={formValues.fromAmount}
             currency={formValues.from}
@@ -146,7 +146,7 @@ function CurrencyConverterWidget() {
           />
         </div>
       {isSubmitted && !loading &&  <div className={`${styles.selectColumn} ${styles.toAmountField}`}>
-      <InputLabel label="To Amount:"></InputLabel>
+      <InputLabel label="Converted To:" />
           <NumberInput
             value={formValues.toAmount ? formValues.toAmount : 0}
             currency={formValues.to}
@@ -161,7 +161,7 @@ function CurrencyConverterWidget() {
         {!isSubmitted && <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>}
         {isSubmitted && !loading && 
         <div className={styles.responseWrapper}>
-        <IoIosAddCircle /> <span>1 {formValues.from} = {formValues.rate} {formValues.to}</span>
+        <IoIosRadioButtonOff /> <span>1 {formValues.from} = {formValues.rate} {formValues.to}</span>
           <p className={styles.subText}>All figures are live mid-market rates, which are for informational purposes only. To see the rates for money transfer, please select sending money option.</p>
         </div>
         }
