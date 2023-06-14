@@ -11,9 +11,10 @@ import CurrencyValidationSchema from "./Form/CurrencyValidationSchema";
 import ErrorMessage from "./Form/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import useSWR from "swr";
-import fetchCurrencyData from "../api/currencyApi";
 import FormRow from "./Form/FormRow";
 import FormColumn from "./Form/FormColumn";
+import {fetcher} from '../api/currencyApi';
+
 
 interface CurrencyChange {
   from: string;
@@ -30,12 +31,6 @@ function CurrencyConverterWidget() {
     rate: 1,
     fromAmount: 100,
     toAmount: 100,
-  };
-
-  const fetcher = async (url: string) => {
-    const response = await fetch(url);
-    const data = await response.json();
-    return data;
   };
 
   const apiUrl = `https://my.transfergo.com/api/fx-rates`;
@@ -57,6 +52,7 @@ function CurrencyConverterWidget() {
     fetcher,
     {
       revalidateOnFocus: true,
+
     }
   );
 
@@ -77,14 +73,10 @@ function CurrencyConverterWidget() {
       try {
         setLoading(true);
         setSubmitted(true);
-        // const { from, to, fromAmount } = formValues;
-        // const currencyData = await fetchCurrencyData(from, to, fromAmount);
-        // console.log(currencyData);
-        // setFormValues(currencyData);
       } catch (error) {
         setLoading(false);
         setSubmitted(false);
-        console.error(error);
+        console.log(error);
       } finally {
         setLoading(false);
       }
@@ -98,10 +90,6 @@ function CurrencyConverterWidget() {
     const newValues = { ...formValues, [fieldName]: value };
     setFormValues(newValues);
     validateForm(newValues);
-
-    if (isSubmitted) {
-      // console.log("susveikiu");
-    }
   };
 
   return (
@@ -135,12 +123,11 @@ function CurrencyConverterWidget() {
         <IoIosSwap
           className={styles.swapIcon}
           onClick={() => {
+            const newValues = { ...formValues, from: formValues.to, to: formValues.from };
             setFormValues({
-              ...formValues,
-              from: formValues.to,
-              to: formValues.from,
+              ...newValues
             });
-            validateForm(formValues);
+            validateForm(newValues);
           }}
         ></IoIosSwap>
 
@@ -183,7 +170,7 @@ function CurrencyConverterWidget() {
           <FormColumn className={`${styles.toAmountField}`}>
             <InputLabel label="Converted To:" />
             <NumberInput
-              value={formValues.toAmount ? formValues.toAmount : 0}
+              value={formValues?.toAmount ? formValues.toAmount : 0}
               currency={formValues.to}
               onChange={(e) => {
                 handleChange("toAmount", e ? e : 0);
@@ -196,7 +183,7 @@ function CurrencyConverterWidget() {
         {!isSubmitted && (
           <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>
         )}
-        {!isLoading && isSubmitted && !loading && (
+        {!isLoading && isSubmitted && isFormValid && (
           <div className={styles.responseWrapper}>
             <IoIosRadioButtonOff />{" "}
             <span>

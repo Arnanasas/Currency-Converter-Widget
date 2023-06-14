@@ -1,15 +1,5 @@
-
-async function fetchCurrencyData(from: string, to: string, amount: number) {
-    const response = await fetch(
-      `https://my.transfergo.com/api/fx-rates?from=${from}&to=${to}&amount=${amount}`
-    );
-  
-    if (!response.ok) {
-      throw new Error('API request failed');
-    }
-  
-    return response.json();
-  }
-  
-  export default fetchCurrencyData;
-  
+export const fetcher = async (url: string) => {
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+  };
