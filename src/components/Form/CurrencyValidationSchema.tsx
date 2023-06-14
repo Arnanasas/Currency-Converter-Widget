@@ -56,7 +56,7 @@ const CurrencyValidationSchema = yup.object().shape({
         return true;
       },
     }),
-  toAmount: yup.number().positive(),
+  toAmount: yup.number(),
 });
 
 export default CurrencyValidationSchema;
