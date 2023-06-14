@@ -11,8 +11,9 @@ import CurrencyValidationSchema from "./Form/CurrencyValidationSchema";
 import ErrorMessage from "./Form/ErrorMessage";
 import ClipLoader from "react-spinners/ClipLoader";
 import useSWR from "swr";
-import fetchCurrencyData from '../api/currencyApi';
-
+import fetchCurrencyData from "../api/currencyApi";
+import FormRow from "./Form/FormRow";
+import FormColumn from "./Form/FormColumn";
 
 interface CurrencyChange {
   from: string;
@@ -38,33 +39,36 @@ function CurrencyConverterWidget() {
   };
 
   const apiUrl = `https://my.transfergo.com/api/fx-rates`;
-  
 
   const [formValues, setFormValues, isFormValid, errorMessage, validateForm] =
     useForm(initialValues, CurrencyValidationSchema);
 
-    const [loading, setLoading] = useState(false);
-    const [isSubmitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isSubmitted, setSubmitted] = useState(false);
 
-    const triggerRender = () => {
-      return isFormValid === true && isSubmitted === true;
-    };
+  const triggerRender = () => {
+    return isFormValid === true && isSubmitted === true;
+  };
 
-    const { data, isLoading } = useSWR(!triggerRender() ? null : `${apiUrl}?from=${formValues.from}&to=${formValues.to}&amount=${formValues.fromAmount}`, fetcher, {
+  const { data, isLoading } = useSWR(
+    !triggerRender()
+      ? null
+      : `${apiUrl}?from=${formValues.from}&to=${formValues.to}&amount=${formValues.fromAmount}`,
+    fetcher,
+    {
       revalidateOnFocus: true,
-    });
+    }
+  );
 
-    useEffect(() => {
-      if (isSubmitted) {
-        setFormValues((prevValues) => ({
-          ...prevValues,
-          rate: data?.rate,
-          toAmount: data?.toAmount,
-        }));
-      }
-    }, [isSubmitted, data]);
-
-
+  useEffect(() => {
+    if (isSubmitted) {
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        rate: data?.rate,
+        toAmount: data?.toAmount,
+      }));
+    }
+  }, [isSubmitted, data]);
 
   const handleSubmit = async (e: MouseEvent | FormEvent) => {
     e.preventDefault();
@@ -87,22 +91,23 @@ function CurrencyConverterWidget() {
     }
   };
 
-  const handleChange = async (fieldName: string, value: string | number | null) => {
+  const handleChange = async (
+    fieldName: string,
+    value: string | number | null
+  ) => {
     const newValues = { ...formValues, [fieldName]: value };
     setFormValues(newValues);
     validateForm(newValues);
 
-    if(isSubmitted) {
-        // console.log("susveikiu");
-      }
+    if (isSubmitted) {
+      // console.log("susveikiu");
+    }
   };
-  
-
 
   return (
     <form onSubmit={handleSubmit} className={styles.selectContainer}>
-      <div className={styles.formRow}>
-        <div className={styles.selectColumn}>
+      <FormRow>
+        <FormColumn>
           <InputLabel label="From:" />
           <Select
             options={currenciesData}
@@ -125,7 +130,7 @@ function CurrencyConverterWidget() {
               handleChange("from", e ? e.value : null);
             }}
           />
-        </div>
+        </FormColumn>
 
         <IoIosSwap
           className={styles.swapIcon}
@@ -139,7 +144,7 @@ function CurrencyConverterWidget() {
           }}
         ></IoIosSwap>
 
-        <div className={styles.selectColumn}>
+        <FormColumn>
           <InputLabel label="To:" />
           <Select
             options={currenciesData}
@@ -160,10 +165,11 @@ function CurrencyConverterWidget() {
               handleChange("to", e ? e.value : null);
             }}
           />
-        </div>
-      </div>
-      <div className={styles.formRow}>
-        <div className={styles.selectColumn}>
+        </FormColumn>
+      </FormRow>
+
+      <FormRow>
+        <FormColumn>
           <InputLabel label="Amount:" />
           <NumberInput
             value={formValues.fromAmount}
@@ -172,29 +178,43 @@ function CurrencyConverterWidget() {
               handleChange("fromAmount", e ? e : "");
             }}
           />
+        </FormColumn>
+        {isSubmitted && !loading && (
+          <FormColumn className={`${styles.toAmountField}`}>
+            <InputLabel label="Converted To:" />
+            <NumberInput
+              value={formValues.toAmount ? formValues.toAmount : 0}
+              currency={formValues.to}
+              onChange={(e) => {
+                handleChange("toAmount", e ? e : 0);
+              }}
+            />
+          </FormColumn>
+        )}
+      </FormRow>
+      <FormRow>
+        {!isSubmitted && (
+          <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>
+        )}
+        {!isLoading && isSubmitted && !loading && (
+          <div className={styles.responseWrapper}>
+            <IoIosRadioButtonOff />{" "}
+            <span>
+              1 {formValues.from} = {formValues.rate} {formValues.to}
+            </span>
+            <p className={styles.subText}>
+              All figures are live mid-market rates, which are for informational
+              purposes only. To see the rates for money transfer, please select
+              sending money option.
+            </p>
+          </div>
+        )}
+      </FormRow>
+      {isLoading && (
+        <div className={styles.loaderWrapper}>
+          <ClipLoader />
         </div>
-      {isSubmitted && !loading &&  <div className={`${styles.selectColumn} ${styles.toAmountField}`}>
-      <InputLabel label="Converted To:" />
-          <NumberInput
-            value={formValues.toAmount ? formValues.toAmount : 0}
-            currency={formValues.to}
-            onChange={(e) => {
-              handleChange("toAmount", e ? e : 0);
-            }}
-          />
-      </div>
-      }
-      </div>
-      <div className={styles.formRow}>
-        {!isSubmitted && <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>}
-        {!isLoading && isSubmitted && !loading && 
-        <div className={styles.responseWrapper}>
-        <IoIosRadioButtonOff /> <span>1 {formValues.from} = {formValues.rate} {formValues.to}</span>
-          <p className={styles.subText}>All figures are live mid-market rates, which are for informational purposes only. To see the rates for money transfer, please select sending money option.</p>
-        </div>
-        }
-      </div>
-      {isLoading && <div className={styles.loaderWrapper}><ClipLoader /></div>}
+      )}
       {!isFormValid && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </form>
   );

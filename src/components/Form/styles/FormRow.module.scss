@@ -1,0 +1,12 @@
+@import "../../../styles/variables";
+
+.formRow {
+  display: flex;
+  padding-bottom: $font-size-large;
+}
+@media (max-width: $layout-breakpoint-small) {
+  .formRow {
+    flex-direction: column;
+    align-items: center;
+  }
+}
