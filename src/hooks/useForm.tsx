@@ -9,22 +9,9 @@ import { Schema, ValidationError } from 'yup';
     const [isFormValid, setIsFormValid] = useState<boolean>(true);
     const [errorMessage, setErrorMessage] = useState<string>('');
 
-    // const validateForm = () => {
-    //   validationSchema
-    //     .validate(formValues)
-    //     .then(() => {
-    //       setIsFormValid(true); 
-    //       setErrorMessage('');
-    //     })
-    //     .catch((error: ValidationError) => {
-    //       setIsFormValid(false);
-    //       setErrorMessage(error.message);
-    //     });
-    // };
-
     const validateForm = useCallback((values: T) => {
       validationSchema
-        .validate(values, { abortEarly: false })
+        .validate(values)
         .then(() => {
           setIsFormValid(true);
           setErrorMessage('');
