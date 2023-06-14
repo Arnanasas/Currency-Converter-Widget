@@ -6,7 +6,7 @@ const CurrencyValidationSchema = yup.object().shape({
   rate: yup.number(),
   fromAmount: yup
     .number()
-    .typeError('From amount should be a number > 0!')
+    .typeError("From amount should be a number > 0!")
     .required("Amount field is required")
     .positive("Amount must be positive")
     .test({

@@ -1,4 +1,10 @@
-import React, { MouseEvent, useState, FormEvent, useEffect } from "react";
+import React, {
+  MouseEvent,
+  useState,
+  FormEvent,
+  useEffect,
+  useRef,
+} from "react";
 import currenciesData from "./currencies.json";
 import styles from "./styles/CurrencyConverterWidget.module.scss";
 import Select from "react-select";
@@ -13,8 +19,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import useSWR from "swr";
 import FormRow from "./Form/FormRow";
 import FormColumn from "./Form/FormColumn";
-import {fetcher} from '../api/currencyApi';
-
+import { fetcher } from "../api/currencyApi";
 
 interface CurrencyChange {
   from: string;
@@ -25,6 +30,7 @@ interface CurrencyChange {
 }
 
 function CurrencyConverterWidget() {
+  // Initial values
   const initialValues: CurrencyChange = {
     from: "EUR",
     to: "GBP",
@@ -45,24 +51,36 @@ function CurrencyConverterWidget() {
     return isFormValid === true && isSubmitted === true;
   };
 
+  const isConvertFrom = useRef(true);
+
+  const apiFromQuery = `?from=${formValues.from}&to=${formValues.to}&amount=${formValues.fromAmount}`;
+  const apiToQuery = `?from=${formValues.to}&to=${formValues.from}&amount=${formValues.toAmount}`;
+
   const { data, isLoading } = useSWR(
     !triggerRender()
       ? null
-      : `${apiUrl}?from=${formValues.from}&to=${formValues.to}&amount=${formValues.fromAmount}`,
+      : `${apiUrl}${isConvertFrom.current ? apiFromQuery : apiToQuery}`,
     fetcher,
     {
       revalidateOnFocus: true,
-
     }
   );
 
+  // call API if isSubmitted and dataChanged.
   useEffect(() => {
     if (isSubmitted) {
-      setFormValues((prevValues) => ({
-        ...prevValues,
-        rate: data?.rate,
-        toAmount: data?.toAmount,
-      }));
+      if (isConvertFrom.current) {
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          rate: data?.rate,
+          toAmount: data?.toAmount,
+        }));
+      } else {
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          fromAmount: data?.toAmount,
+        }));
+      }
     }
   }, [isSubmitted, data]);
 
@@ -89,7 +107,8 @@ function CurrencyConverterWidget() {
   ) => {
     const newValues = { ...formValues, [fieldName]: value };
     setFormValues(newValues);
-    validateForm(newValues);
+    if (isConvertFrom.current) validateForm(newValues);
+    isConvertFrom.current = fieldName === "fromAmount";
   };
 
   return (
@@ -123,9 +142,13 @@ function CurrencyConverterWidget() {
         <IoIosSwap
           className={styles.swapIcon}
           onClick={() => {
-            const newValues = { ...formValues, from: formValues.to, to: formValues.from };
+            const newValues = {
+              ...formValues,
+              from: formValues.to,
+              to: formValues.from,
+            };
             setFormValues({
-              ...newValues
+              ...newValues,
             });
             validateForm(newValues);
           }}
@@ -159,10 +182,10 @@ function CurrencyConverterWidget() {
         <FormColumn>
           <InputLabel label="Amount:" />
           <NumberInput
-            value={formValues.fromAmount}
+            value={formValues?.fromAmount ? formValues.fromAmount : 100}
             currency={formValues.from}
             onChange={(e) => {
-              handleChange("fromAmount", e ? e : "");
+              handleChange("fromAmount", e);
             }}
           />
         </FormColumn>
@@ -170,10 +193,10 @@ function CurrencyConverterWidget() {
           <FormColumn className={`${styles.toAmountField}`}>
             <InputLabel label="Converted To:" />
             <NumberInput
-              value={formValues?.toAmount ? formValues.toAmount : 0}
+              value={formValues?.toAmount ? formValues.toAmount : 100}
               currency={formValues.to}
               onChange={(e) => {
-                handleChange("toAmount", e ? e : 0);
+                handleChange("toAmount", e);
               }}
             />
           </FormColumn>
