@@ -1,47 +1,35 @@
-# Getting Started with Create React App
+# Currency Converter Widget
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Currency Converter Widget](https://www.part.lt/img/be17f965c4c12daefac89a01537e20d8331.png)
 
-## Available Scripts
+Built with TypeScript, React, and SCSS (CSS Modules). This widget allows users to easily convert between different currencies with real-time exchange rates. Using TransferGo TaxesAPI.
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+To use the Currency Converter Widget in your project, follow these steps:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   ```bash
+   git clone https://github.com/Arnanasas/Currency-Converter-Widget.git
+   cd currency-converter-widget
+   npm install & npm start
+   ```
+## Formal requirements 
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- Uses TransferGo API for FX rates (details below). ✅
+- Allows user to select initial FROM currency, TO currency and AMOUNT to convert (defaults to EUR -> GBP with amount 1.00 EUR). Mocked supported currency pairs. I.e. 2 lists for FROM, TO (supported currencies: PLN, EUR, GBP, UAH). ✅
+- Has a button for initial conversion. ✅
+- After conversion, AMOUNT and CONVERTED TO should be updated and conversion rate should be displayed at the bottom. ✅
+- After initial conversion using the button, the following conversions should be automatic when any of the values change. ✅
+- If the user updates CONVERTED TO input the AMOUNT value should be updated accordingly. ✅
+- All values should be updated via a new API call to get the most recent conversion rates. ✅
 
-### `npm test`
+## Personal requirements 
+- Make widget fully responsive and as close to pixel-perfect ✅
+- Use 100% Typescript ✅
+- Write at least 80% coverage Unit Tests ❌
+- Write as possible reusable and readble code ✅❌
+- Optimize Widget performance (re-render count) using useMemo, memoize hooks❌
+- Best HTML & CSS practices ✅
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+*For all the ❌ 's-  ran out of time tu achieve desired outcome*
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-# Currency-Converter-Widget
