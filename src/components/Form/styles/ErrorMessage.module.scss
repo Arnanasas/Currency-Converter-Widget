@@ -1,0 +1,11 @@
+@import '../../../styles/variables';
+
+.errorContainer {
+    width: 100%;
+    text-align: center;
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    color: $error-color;
+    background-color: lighten($error-color, 40%);
+    padding: $font-size-medium 0;
+}
