@@ -9,7 +9,7 @@ type NumberInputProps = {
 
 const NumberInput: FC<NumberInputProps> = ({ value, onChange, currency }) => {
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseFloat(event.target.value) || "";
+    const newValue = parseFloat(event.target.value) || 0;
     onChange(newValue as number);
   };
 
