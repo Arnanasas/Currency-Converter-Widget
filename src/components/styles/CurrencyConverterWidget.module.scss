@@ -34,7 +34,7 @@
 
 .swapIcon {
   color: $icon-color;
-  font-size: $icon-size-large !important;
+  font-size: $icon-size-large ;
   stroke-width: 12px;
   padding: 0 $font-size-small;
   transition: 0.4s;
@@ -49,7 +49,7 @@
 .formRow {
   display: flex;
   padding-bottom: $font-size-large;
-}
+} 
 
 .loaderWrapper {
   display: flex;
@@ -79,4 +79,19 @@
   font-weight: $font-weight-light;
   font-size: $font-size-small;
   
+}
+
+// mobile styles
+@media (max-width: $layout-breakpoint-small) {
+  .formRow {
+    flex-direction: column;
+    align-items: center;
+  }
+  .swapIcon {
+    font-size: 30px;
+  }
+
+  .toAmountField {
+    padding: 20px 0 0 0;
+  }
 }
