@@ -1,4 +1,4 @@
-import React, {MouseEvent, useState} from 'react';
+import React, {MouseEvent} from 'react';
 import currenciesData from './currencies.json';
 import styles from './styles/CurrencyConverterWidget.module.scss';
 import Select from 'react-select';
@@ -7,6 +7,8 @@ import useForm from '../hooks/useForm';
 import InputLabel from './Form/inputLabel';
 import SubmitButton from './Form/SubmitButton';
 import NumberInput from './Form/NumberInput';
+import CurrencyValidationSchema from './Form/CurrencyValidationSchema';
+import ErrorMessage from './Form/ErrorMessage';
 
 interface CurrencyChange {
   from: string;
@@ -21,20 +23,22 @@ function CurrencyConverterWidget() {
     from: 'EUR',
     to: 'GBP',
     amount: 100,
-    toAmount: 0,
+    toAmount: 1,
   };
     
-    const [formValues, setFormValues] = useForm(initialValues);
-    const [error, setError] = useState<string | null>(null);
+    const [formValues, setFormValues, isFormValid, errorMessage, validateForm] = useForm(initialValues, CurrencyValidationSchema);
 
     const handleSubmit = (e: MouseEvent) => {
         e.preventDefault();
-        console.log(formValues);
+        // console.log(formValues);
+        validateForm(formValues);
+        console.log(isFormValid);
     };
 
-    const handleChange = (fieldName: string, value: any) => {
-        const newValues = { ...formValues, [fieldName]: value };
-        setFormValues(newValues);
+    const handleChange = (fieldName: string, value: string | number | null) => {
+      const newValues = { ...formValues, [fieldName]: value };
+      setFormValues(newValues);
+      validateForm(newValues);
       };
 
   return (
@@ -57,7 +61,7 @@ function CurrencyConverterWidget() {
         />
       </div>
 
-      <IoIosSwap className={styles.swapIcon} onClick={() => setFormValues({...formValues, from: formValues.to, to: formValues.from})}></IoIosSwap>
+      <IoIosSwap className={styles.swapIcon} onClick={() => {setFormValues({...formValues, from: formValues.to, to: formValues.from}); validateForm(formValues);}}></IoIosSwap>
 
       <div className={styles.selectColumn}>
         <InputLabel label="To:"/>
@@ -72,14 +76,14 @@ function CurrencyConverterWidget() {
               <span>{currency.value}</span>
             </div>
           )}
-          onChange={e => {setFormValues({...formValues, to: e ? e.value : ""});}}
+          onChange={e => {handleChange('to', e ? e.value : null);}}
         />
       </div>
       </div>
       <div className={styles.formRow}>
       <div className={styles.selectColumn}>
         <InputLabel label="Amount:"></InputLabel>
-        <NumberInput value={formValues.amount} currency={formValues.from} onChange={e => setFormValues({...formValues, amount: e})} />
+        <NumberInput value={formValues.amount} currency={formValues.from} onChange={e => {handleChange('amount', e ? e : '');}} />
       </div>
       {/* <div className={styles.selectColumn}>
         <InputLabel label="Amount:"></InputLabel>
@@ -92,6 +96,7 @@ function CurrencyConverterWidget() {
       <div className={styles.formRow}>
             <SubmitButton label="Submit" onClick={handleSubmit}></SubmitButton>
       </div>
+      {!isFormValid ? <ErrorMessage>{errorMessage}</ErrorMessage> : ''}
     </form>
   );
 }
