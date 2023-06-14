@@ -2,15 +2,19 @@ import React, { FC, ChangeEvent } from "react";
 import styles from "./styles/NumberInput.module.scss";
 
 type NumberInputProps = {
-  value: number | string;
+  value: number;
   onChange: (value: number) => void;
   currency: string;
 };
 
 const NumberInput: FC<NumberInputProps> = ({ value, onChange, currency }) => {
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const newValue = parseFloat(event.target.value) || 0;
-    onChange(newValue as number);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    const floatValue = parseFloat(inputValue);
+
+    if (!isNaN(floatValue)) {
+      onChange(floatValue);
+    }
   };
 
   return (
@@ -19,7 +23,7 @@ const NumberInput: FC<NumberInputProps> = ({ value, onChange, currency }) => {
         type="number"
         className={styles.textInput}
         value={value}
-        onChange={handleInputChange}
+        onChange={handleChange}
       />
       <i>{currency}</i>
     </div>
