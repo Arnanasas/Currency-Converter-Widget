@@ -1,52 +1,66 @@
-@import '../../styles/variables';
+@import "../../styles/variables";
 
-
-//   
+//
 // Form fields
-// 
+//
 
 .selectWrapper {
-    display:flex;
-    align-items:center;
+  display: flex;
+  align-items: center;
 }
 
 .selectContainer {
-    // display: flex;
-    // align-items: center;
-    padding: $font-size-large;
-  }
+  // display: flex;
+  // align-items: center;
+  padding: $font-size-large;
+}
 
 .formWrapper {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 10px;
-  }
-  
-  .countryImage {
-    max-width: 24px;
-    height: 24px;
-    margin-right: 8px;
-    transform: translateY(-1px);
-  }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+}
 
-  .selectColumn {
-    width: 100%;
-  }
+.countryImage {
+  max-width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  transform: translateY(-1px);
+}
 
-  .swapIcon {
-    color: $icon-color;
-    font-size: $icon-size-large!important;
-    stroke-width: 12px;
-    padding: 0 $font-size-small;
-    transition: 0.4s;
-    &:hover {
-        color: darken($icon-color, 20%);
-        transform: rotate(180deg);
-        // transform: scale(110%);
-    }
-  }
+.selectColumn {
+  width: 100%;
+}
 
-  .formRow {
-    display: flex;
-    padding-bottom: $font-size-large;
+.swapIcon {
+  color: $icon-color;
+  font-size: $icon-size-large !important;
+  stroke-width: 12px;
+  padding: 0 $font-size-small;
+  transition: 0.4s;
+  &:hover {
+    color: darken($icon-color, 20%);
+    transform: rotate(180deg);
+    // transform: scale(110%);
   }
+}
+
+.formRow {
+  display: flex;
+  padding-bottom: $font-size-large;
+}
+
+.loaderWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.responseWrapper {
+  display:flex;
+  align-items: center;
+  font-size: $font-size-medium;
+  font-weight: $font-weight-bold;
+  svg {
+    color: $theme-color;
+  }
+}
